@@ -254,20 +254,19 @@ function Home() {
         {/* Hero Section */}
         <section className="mb-20">
           <p className="text-[var(--ctp-subtext0)] mb-4">Hello, I'm</p>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+<h1 className="text-5xl md:text-7xl font-bold mb-6">
             <span className="text-[var(--accent-color)]">{displayText.slice(0, 3)}</span>
             <span className="text-[var(--ctp-text)]">{displayText.slice(3)}</span>
             <span className={`text-[var(--accent-color)] ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
           </h1>
-          
-                    {/* Quote */}
-          <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2">
+
+          {/* Quote */}
+          <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2 mb-8">
             <p className="text-xl md:text-2xl text-[var(--ctp-text)] italic mb-2">
               "Don't let yesterday take up too much of today."
             </p>
             <cite className="text-[var(--ctp-subtext0)] text-sm">— My personal motto</cite>
           </blockquote>
-        </section>
 
           {/* Bio */}
           <div className="mb-8 max-w-2xl space-y-3 text-[var(--ctp-subtext1)] leading-relaxed">
