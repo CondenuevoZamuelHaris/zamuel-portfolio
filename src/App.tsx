@@ -532,16 +532,18 @@ const [clickCount, setClickCount] = useState(0);
       </div>
 
 {/* Click Counter */}
-      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative flex flex-col items-center text-center">
-        <div className="absolute top-3 right-3 relative group/tooltip">
+<div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative flex flex-col items-center text-center">
+        <div className="w-full flex justify-end mb-1">
+        <div className="relative group/tooltip">
           <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors text-sm">ⓘ</span>
           <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg text-left">
             <p className="font-semibold text-[var(--ctp-text)] mb-1">CLICK ME</p>
             <p className="mb-2">A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.</p>
             <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
-          </div>
+</div>
         </div>
-        <p className="text-5xl font-mono font-bold text-[var(--accent-color)] mt-6 mb-6">
+        </div>
+        <p className="text-5xl font-mono font-bold text-[var(--accent-color)] mb-6">
           {isLoading ? '...' : clickCount.toLocaleString()}
         </p>
         <button
