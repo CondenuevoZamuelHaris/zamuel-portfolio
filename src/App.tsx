@@ -548,7 +548,7 @@ const [clickCount, setClickCount] = useState(0);
         <p className="text-xs text-[var(--ctp-overlay0)]">
           A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.
         </p>
-        <p className="text-xs text-[var(--ctp-overlay0)] mt-2">Powered by Abacus</p>
+        <p className="text-xs text-[var(--ctp-overlay0)] mt-2">Powered by counterapi</p>
       </div>
 
 {/* View Counter */}
