@@ -401,8 +401,9 @@ function ViewCounter() {
         </span>
       </div>
       <p className="text-xs text-[var(--ctp-overlay0)] mt-2">
-        Counts every visit to this portfolio from anyone, anywhere.
+        A real-time global counter tracking every visit from anyone, anywhere.
       </p>
+      <p className="text-xs text-[var(--ctp-overlay0)] mt-1">Powered by counterapi</p>
     </div>
   );
 }                          
@@ -520,8 +521,8 @@ const [clickCount, setClickCount] = useState(0);
 
       {/* Click Counter */}
       <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)]">
-        <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-2">
-          you've clicked <span className="text-[var(--accent-color)]">{clickCount}</span> times
+<h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-2">
+          Click Counter
         </h3>
 <button
           onClick={() => {
