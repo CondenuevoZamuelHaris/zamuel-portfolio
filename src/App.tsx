@@ -354,6 +354,7 @@ function Home() {
             ))}
           </div>
         </section>
+        
 
         {/* Dashboard / Highlights */}
         <section>
@@ -364,6 +365,34 @@ function Home() {
     </div>
   );
 }
+
+function ViewCounter() {
+  const [totalViews, setTotalViews] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
+      .then(res => res.json())
+      .then(data => setTotalViews(data.count))
+      .catch(() => setTotalViews(null));
+  }, []);
+
+  return (
+    <div className="space-y-3">
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-[var(--ctp-subtext1)]">Total Views</span>
+        <span className="text-2xl font-mono text-[var(--accent-color)]">
+          {totalViews === null ? '...' : totalViews.toLocaleString()}
+        </span>
+      </div>
+      <p className="text-xs text-[var(--ctp-overlay0)] mt-2">
+        Counts every visit to this portfolio from anyone, anywhere.
+      </p>
+    </div>
+  );
+}
+
+// Dashboard Highlights Component
+function DashboardHighlights() {
 
 // Dashboard Highlights Component
 function DashboardHighlights() {
@@ -508,23 +537,10 @@ const [clickCount, setClickCount] = useState(0);
         <p className="text-xs text-[var(--ctp-overlay0)] mt-2">Powered by Abacus</p>
       </div>
 
-      {/* View Counter */}
+{/* View Counter */}
       <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)]">
         <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-4">View Counter</h3>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-[var(--ctp-subtext1)]">Today</span>
-            <span className="text-2xl font-mono text-[var(--accent-color)]">47</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-[var(--ctp-subtext1)]">Yesterday</span>
-            <span className="text-2xl font-mono text-[var(--ctp-text)]">128</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-[var(--ctp-subtext1)]">All</span>
-            <span className="text-2xl font-mono text-[var(--ctp-text)]">3,162</span>
-          </div>
-        </div>
+        <ViewCounter />
       </div>
 
       {/* Let's Connect */}
