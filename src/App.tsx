@@ -415,12 +415,7 @@ function ViewCounter() {
       <div className="flex justify-between items-center">
         <span className="text-sm text-[var(--ctp-subtext1)]">All</span>
         <span className="text-2xl font-mono text-[var(--ctp-text)]">{fmt(totalViews)}</span>
-      </div>git add .
-
-      <p className="text-xs text-[var(--ctp-overlay0)] mt-2">
-        A real-time global counter tracking every visit from anyone, anywhere.
-      </p>
-      <p className="text-xs text-[var(--ctp-overlay0)]">Powered by counterapi</p>
+      </div>
     </div>
   );
 }              
@@ -536,11 +531,19 @@ const [clickCount, setClickCount] = useState(0);
         </label>
       </div>
 
-      {/* Click Counter */}
-      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)]">
-<h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-2">
-          Click Counter
-        </h3>
+{/* Click Counter */}
+      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative group/click">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-semibold text-[var(--ctp-text)]">Click Counter</h3>
+          <div className="relative">
+            <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors">ⓘ</span>
+            <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/click:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg">
+              <p className="font-semibold text-[var(--ctp-text)] mb-1">CLICK ME</p>
+              <p className="mb-2">A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.</p>
+              <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
+            </div>
+          </div>
+        </div>
 <button
           onClick={() => {
             fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks/up')
@@ -561,16 +564,20 @@ const [clickCount, setClickCount] = useState(0);
         >
           {isLoading ? '...' : clickCount}
         </button>
-        <p className="text-sm text-[var(--ctp-subtext0)] mb-1">CLICK ME</p>
-        <p className="text-xs text-[var(--ctp-overlay0)]">
-          A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.
-        </p>
-        <p className="text-xs text-[var(--ctp-overlay0)] mt-2">Powered by counterapi</p>
       </div>
 
 {/* View Counter */}
-      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)]">
-        <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-4">View Counter</h3>
+      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative group/view">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-[var(--ctp-text)]">View Counter</h3>
+          <div className="relative">
+            <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors">ⓘ</span>
+            <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/view:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg">
+              <p className="mb-2">A real-time global counter tracking every visit from anyone, anywhere.</p>
+              <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
+            </div>
+          </div>
+        </div>
         <ViewCounter />
       </div>
 
@@ -606,7 +613,7 @@ const [clickCount, setClickCount] = useState(0);
       <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)]">
         <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-2">Based in</h3>
         <p className="text-[var(--ctp-subtext1)] mb-3">Moncada, Tarlac, Philippines</p>
-        <div className="map-grayscale rounded-lg overflow-hidden mb-3">
+<div className="rounded-lg overflow-hidden mb-3" style={{ filter: 'invert(1) hue-rotate(180deg)' }}>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d30722.080111987714!2d120.57395641688395!3d15.737378386107979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1773305339330!5m2!1sen!2sph"
             width="100%"
@@ -655,10 +662,14 @@ const [clickCount, setClickCount] = useState(0);
           View on GitHub <ExternalLink size={14} />
         </a>
       </div>
-
-      {/* Latest Posts */}
+{/* Latest Posts */}
       <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] md:col-span-2 lg:col-span-3">
-        <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-4">Latest Posts</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-[var(--ctp-text)]">Latest Posts</h3>
+          <Link to="/posts" className="text-[var(--ctp-overlay0)] hover:text-[var(--accent-color)] transition-colors">
+            <ExternalLink size={16} />
+          </Link>
+        </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {posts.map((post, i) => (
             <Link 
