@@ -299,7 +299,20 @@ function Home() {
               <Instagram size={20} />
             </a>
           </div>
-
+                    {/* Bio */}
+          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-4 max-w-2xl">
+            I'm a 19-year-old aspiring Software Engineer from Moncada, Tarlac, Philippines. 
+            Currently studying BS Computer Science at ICF Interworld Colleges Foundation, 
+            living with my grandmother and learning to code. I'm passionate about creating 
+            software that makes people's lives easier.
+          </p>
+          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-8 max-w-2xl">
+            When I'm not coding, you'll find me{' '}
+            <span className="text-[var(--accent-color)]">skateboarding</span>, listening to{' '}
+            <span className="text-[var(--accent-color)]">Joji, Nujabes, or Radwimps</span>, or 
+            gaming with friends. I believe in embracing failures as lessons and staying true to myself.
+          </p>
+          
           {/* Quote */}
           <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2">
             <p className="text-xl md:text-2xl text-[var(--ctp-text)] italic mb-2">
@@ -320,7 +333,7 @@ function Home() {
           
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project, index) => (
-              <div key={index} className="window-card">
+                <div key={index} className="window-card transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[var(--accent-color)]/20 hover:border-[var(--accent-color)] cursor-pointer">
                 <div className="window-header">
                   <div className="window-dot window-dot-red"></div>
                   <div className="window-dot window-dot-yellow"></div>
