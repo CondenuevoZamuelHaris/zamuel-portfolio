@@ -260,6 +260,20 @@ function Home() {
             <span className={`text-[var(--accent-color)] ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
           </h1>
           
+          {/* Bio */}
+          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-4 max-w-2xl">
+            I'm a 19-year-old aspiring Software Engineer from Moncada, Tarlac, Philippines. 
+            Currently studying BS Computer Science at ICF Interworld Colleges Foundation, 
+            living with my grandmother and learning to code. I'm passionate about creating 
+            software that makes people's lives easier.
+          </p>
+          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-8 max-w-2xl">
+            When I'm not coding, you'll find me{' '}
+            <span className="text-[var(--accent-color)]">skateboarding</span>, listening to{' '}
+            <span className="text-[var(--accent-color)]">Joji, Nujabes, or Radwimps</span>, or 
+            gaming with friends. I believe in embracing failures as lessons and staying true to myself.
+          </p>
+
           {/* Status Badges */}
           <div className="flex flex-wrap gap-3 mb-8">
             <span className="px-4 py-2 rounded-full bg-[var(--ctp-surface0)] text-[var(--ctp-subtext1)] text-sm flex items-center gap-2">
@@ -299,19 +313,6 @@ function Home() {
               <Instagram size={20} />
             </a>
           </div>
-                    {/* Bio */}
-          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-4 max-w-2xl">
-            I'm a 19-year-old aspiring Software Engineer from Moncada, Tarlac, Philippines. 
-            Currently studying BS Computer Science at ICF Interworld Colleges Foundation, 
-            living with my grandmother and learning to code. I'm passionate about creating 
-            software that makes people's lives easier.
-          </p>
-          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-8 max-w-2xl">
-            When I'm not coding, you'll find me{' '}
-            <span className="text-[var(--accent-color)]">skateboarding</span>, listening to{' '}
-            <span className="text-[var(--accent-color)]">Joji, Nujabes, or Radwimps</span>, or 
-            gaming with friends. I believe in embracing failures as lessons and staying true to myself.
-          </p>
           
           {/* Quote */}
           <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2">
