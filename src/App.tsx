@@ -383,30 +383,45 @@ function Home() {
 }
 
 function ViewCounter() {
+  const [todayViews, setTodayViews] = useState<number | null>(null);
   const [totalViews, setTotalViews] = useState<number | null>(null);
 
   useEffect(() => {
     fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
       .then(res => res.json())
-      .then(data => setTotalViews(data.count))
-      .catch(() => setTotalViews(null));
+      .then(data => {
+        setTotalViews(data.count);
+        setTodayViews(data.count_today ?? null);
+      })
+      .catch(() => {
+        setTotalViews(null);
+        setTodayViews(null);
+      });
   }, []);
+
+  const fmt = (n: number | null) => n === null ? '...' : n.toLocaleString();
 
   return (
     <div className="space-y-3">
       <div className="flex justify-between items-center">
-        <span className="text-sm text-[var(--ctp-subtext1)]">Total Views</span>
-        <span className="text-2xl font-mono text-[var(--accent-color)]">
-          {totalViews === null ? '...' : totalViews.toLocaleString()}
-        </span>
+        <span className="text-sm text-[var(--ctp-subtext1)]">Today</span>
+        <span className="text-2xl font-mono text-[var(--accent-color)]">{fmt(todayViews)}</span>
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-[var(--ctp-subtext1)]">Yesterday</span>
+        <span className="text-2xl font-mono text-[var(--ctp-text)]">—</span>
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-[var(--ctp-subtext1)]">All</span>
+        <span className="text-2xl font-mono text-[var(--ctp-text)]">{fmt(totalViews)}</span>
       </div>
       <p className="text-xs text-[var(--ctp-overlay0)] mt-2">
         A real-time global counter tracking every visit from anyone, anywhere.
       </p>
-      <p className="text-xs text-[var(--ctp-overlay0)] mt-1">Powered by counterapi</p>
+      <p className="text-xs text-[var(--ctp-overlay0)]">Powered by counterapi</p>
     </div>
   );
-}                          
+}              
 
 // Dashboard Highlights Component
 function DashboardHighlights() {
