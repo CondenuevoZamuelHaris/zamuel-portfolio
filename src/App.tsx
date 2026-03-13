@@ -260,19 +260,7 @@ function Home() {
             <span className={`text-[var(--accent-color)] ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
           </h1>
           
-          {/* Bio */}
-          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-4 max-w-2xl">
-            I'm a 19-year-old aspiring Software Engineer from Moncada, Tarlac, Philippines. 
-            Currently studying BS Computer Science at ICF Interworld Colleges Foundation, 
-            living with my grandmother and learning to code. I'm passionate about creating 
-            software that makes people's lives easier.
-          </p>
-          <p className="text-[var(--ctp-subtext1)] leading-relaxed mb-8 max-w-2xl">
-            When I'm not coding, you'll find me{' '}
-            <span className="text-[var(--accent-color)]">skateboarding</span>, listening to{' '}
-            <span className="text-[var(--accent-color)]">Joji, Nujabes, or Radwimps</span>, or 
-            gaming with friends. I believe in embracing failures as lessons and staying true to myself.
-          </p>
+          
 
           {/* Status Badges */}
           <div className="flex flex-wrap gap-3 mb-8">
@@ -380,18 +368,26 @@ function Home() {
 // Dashboard Highlights Component
 function DashboardHighlights() {
   const { theme, accentColor, backgroundEffect, setTheme, setAccentColor, setBackgroundEffect } = useTheme();
-  const [clickCount, setClickCount] = useState(0);
-
-  useEffect(() => {
-    fetch('https://api.countapi.xyz/get/zamuel-portfolio/clicks')
-      .then(res => res.json())
-      .then(data => setClickCount(data.value || 0));
-  }, []);
+const [clickCount, setClickCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks')
+      .then(res => res.json())
+      .then(data => {
+        setClickCount(data.count || 0);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setClickCount(parseInt(localStorage.getItem('portfolio-clicks') || '0'));
+        setIsLoading(false);
+      });
   }, []);
 
   const themes: { id: typeof theme; label: string }[] = [
@@ -485,15 +481,25 @@ function DashboardHighlights() {
         <h3 className="text-lg font-semibold text-[var(--ctp-text)] mb-2">
           you've clicked <span className="text-[var(--accent-color)]">{clickCount}</span> times
         </h3>
-        <button
+<button
           onClick={() => {
-            fetch('https://api.countapi.xyz/hit/zamuel-portfolio/clicks')
+            fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks/up')
               .then(res => res.json())
-              .then(data => setClickCount(data.value));
+              .then(data => {
+                setClickCount(data.count);
+                localStorage.setItem('portfolio-clicks', String(data.count));
+              })
+              .catch(() => {
+                setClickCount(c => {
+                  const next = c + 1;
+                  localStorage.setItem('portfolio-clicks', String(next));
+                  return next;
+                });
+              });
           }}
           className="w-full py-3 rounded-lg bg-[var(--ctp-surface1)] text-[var(--ctp-text)] hover:bg-[var(--accent-color)] hover:text-[var(--ctp-crust)] transition-colors mb-4 font-mono text-2xl"
         >
-          {clickCount}
+          {isLoading ? '...' : clickCount}
         </button>
         <p className="text-sm text-[var(--ctp-subtext0)] mb-1">CLICK ME</p>
         <p className="text-xs text-[var(--ctp-overlay0)]">
@@ -664,7 +670,8 @@ function About() {
   const reflections = [
     {
       title: 'Psychological Self',
-content: 'I am an extrovert who enjoys being around people and socializing, but I also value meaningful and genuine connections with others. I can be very expressive, and I continue learning how to stay present and enjoy every moment. I also choose the people I surround myself with wisely, because I believe that the people around you can influence the direction of your future, just like how choosing who you sit with on the first day of class can shape what kind of person you become.'    },
+      content: 'I am an introvert who finds comfort in solitude but also values deep connections with others. I tend to overthink sometimes, but I am working on being more present in the moment.'
+    },
     {
       title: 'Physical Self',
       content: 'My skateboarding accident taught me to appreciate my body more. I am working on staying active and healthy, understanding that physical well-being affects everything else.'
