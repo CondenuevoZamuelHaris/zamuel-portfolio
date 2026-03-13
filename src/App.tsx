@@ -324,8 +324,8 @@ function Home() {
             >
               <Instagram size={20} />
             </a>
-          </div>
-          
+</div>
+        </section>
 
         {/* Featured Projects */}
         <section className="mb-16">
