@@ -532,19 +532,19 @@ const [clickCount, setClickCount] = useState(0);
       </div>
 
 {/* Click Counter */}
-      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative group/click">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-[var(--ctp-text)]">Click Counter</h3>
-<div className="relative group/tooltip">
-            <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors">ⓘ</span>
-            <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg">
-              <p className="font-semibold text-[var(--ctp-text)] mb-1">CLICK ME</p>
-              <p className="mb-2">A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.</p>
-              <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
-            </div>
+      <div className="bg-[var(--ctp-surface0)] rounded-xl p-5 border border-[var(--ctp-surface1)] relative flex flex-col items-center text-center">
+        <div className="absolute top-3 right-3 relative group/tooltip">
+          <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors text-sm">ⓘ</span>
+          <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg text-left">
+            <p className="font-semibold text-[var(--ctp-text)] mb-1">CLICK ME</p>
+            <p className="mb-2">A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.</p>
+            <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
           </div>
         </div>
-<button
+        <p className="text-5xl font-mono font-bold text-[var(--accent-color)] mt-6 mb-6">
+          {isLoading ? '...' : clickCount.toLocaleString()}
+        </p>
+        <button
           onClick={() => {
             fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks/up')
               .then(res => res.json())
@@ -560,10 +560,11 @@ const [clickCount, setClickCount] = useState(0);
                 });
               });
           }}
-          className="w-full py-3 rounded-lg bg-[var(--ctp-surface1)] text-[var(--ctp-text)] hover:bg-[var(--accent-color)] hover:text-[var(--ctp-crust)] transition-colors mb-4 font-mono text-2xl"
+          className="w-full py-3 rounded-lg bg-[var(--accent-color)] text-[var(--ctp-crust)] hover:opacity-80 transition-opacity mb-4 font-bold tracking-widest text-sm"
         >
-          {isLoading ? '...' : clickCount}
+          CLICK ME
         </button>
+        <p className="text-sm text-[var(--ctp-subtext0)]">you've clicked <span className="text-[var(--accent-color)]">{isLoading ? '...' : clickCount.toLocaleString()}</span> times</p>
       </div>
 
 {/* View Counter */}
