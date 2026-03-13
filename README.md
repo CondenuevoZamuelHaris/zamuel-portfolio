@@ -1,7 +1,10 @@
 # Zamuel Haris — Portfolio
 
-Personal portfolio website built with React, TypeScript, and Tailwind CSS.
+# Zamuel Haris — Portfolio
 
+A personal portfolio website built with React and TypeScript.
+
+🔗 Live site: https://condenuevozamuelharis.github.io/zamuel-portfolio/
 ---
 
 ## Tech Stack
@@ -13,33 +16,7 @@ Personal portfolio website built with React, TypeScript, and Tailwind CSS.
 - **React Router v7** — client-side routing
 - **Catppuccin** — theme system (latte / frappe / macchiato / mocha)
 
----
-
-## Getting Started (VS Code)
-
-### Prerequisites
-- [Node.js 20+](https://nodejs.org/)
-- npm (comes with Node)
-
-### 1. Clone the repo
-```bash
-git clone https://github.com/CondenuevoZamuelHaris/zamuel-portfolio.git
-cd portfolio
-```
-
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Start the dev server
-```bash
-npm run dev
-```
-
-Open http://localhost:5173 in your browser.
-
----
+---   
 
 ## Available Scripts
 
@@ -69,34 +46,6 @@ public/
 ├── resume.pdf            # Resume file
 └── nc2.pdf               # National Certificate II
 ```
-
----
-
-## Deploying to GitHub Pages
-
-1. Install the deploy package:
-   ```bash
-   npm install --save-dev gh-pages
-   ```
-
-2. Add to `package.json` scripts:
-   ```json
-   "predeploy": "npm run build",
-   "deploy": "gh-pages -d dist"
-   ```
-
-3. Add `homepage` to `package.json`:
-   ```json
-   "homepage": "https://CondenuevoZamuelHaris.github.io/portfolio"
-   ```
-
-4. Run:
-   ```bash
-   npm run deploy
-   ```
-
----
-
 ## License
 
 MIT
