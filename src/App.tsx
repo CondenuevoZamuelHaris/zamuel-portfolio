@@ -654,8 +654,7 @@ function About() {
   const reflections = [
     {
       title: 'Psychological Self',
-      content: 'I am an introvert who finds comfort in solitude but also values deep connections with others. I tend to overthink sometimes, but I am working on being more present in the moment.'
-    },
+content: 'I am an extrovert who enjoys being around people and socializing, but I also value meaningful and genuine connections with others. I can be very expressive, and I continue learning how to stay present and enjoy every moment. I also choose the people I surround myself with wisely, because I believe that the people around you can influence the direction of your future, just like how choosing who you sit with on the first day of class can shape what kind of person you become.'    },
     {
       title: 'Physical Self',
       content: 'My skateboarding accident taught me to appreciate my body more. I am working on staying active and healthy, understanding that physical well-being affects everything else.'
