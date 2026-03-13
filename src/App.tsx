@@ -1568,7 +1568,7 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <Router basename="/zamuel-portfolio/">
         <AppContent />
       </Router>
     </ThemeProvider>
