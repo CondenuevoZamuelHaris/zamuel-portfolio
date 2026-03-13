@@ -380,9 +380,13 @@ function Home() {
 // Dashboard Highlights Component
 function DashboardHighlights() {
   const { theme, accentColor, backgroundEffect, setTheme, setAccentColor, setBackgroundEffect } = useTheme();
-  const [clickCount, setClickCount] = useState(() => {
-    return parseInt(localStorage.getItem('portfolio-clicks') || '0');
-  });
+  const [clickCount, setClickCount] = useState(0);
+
+  useEffect(() => {
+    fetch('https://api.countapi.xyz/get/zamuel-portfolio/clicks')
+      .then(res => res.json())
+      .then(data => setClickCount(data.value || 0));
+  }, []);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -482,11 +486,11 @@ function DashboardHighlights() {
           you've clicked <span className="text-[var(--accent-color)]">{clickCount}</span> times
         </h3>
         <button
-          onClick={() => setClickCount(c => {
-            const next = c + 1;
-            localStorage.setItem('portfolio-clicks', String(next));
-            return next;
-          })}
+          onClick={() => {
+            fetch('https://api.countapi.xyz/hit/zamuel-portfolio/clicks')
+              .then(res => res.json())
+              .then(data => setClickCount(data.value));
+          }}
           className="w-full py-3 rounded-lg bg-[var(--ctp-surface1)] text-[var(--ctp-text)] hover:bg-[var(--accent-color)] hover:text-[var(--ctp-crust)] transition-colors mb-4 font-mono text-2xl"
         >
           {clickCount}
