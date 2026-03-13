@@ -387,16 +387,17 @@ function ViewCounter() {
   const [totalViews, setTotalViews] = useState<number | null>(null);
 
   useEffect(() => {
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    
     fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
       .then(res => res.json())
-      .then(data => {
-        setTotalViews(data.count);
-        setTodayViews(data.count_today ?? null);
-      })
-      .catch(() => {
-        setTotalViews(null);
-        setTodayViews(null);
-      });
+      .then(data => setTotalViews(data.count))
+      .catch(() => setTotalViews(null));
+
+    fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${today}/up`)
+      .then(res => res.json())
+      .then(data => setTodayViews(data.count))
+      .catch(() => setTodayViews(null));
   }, []);
 
   const fmt = (n: number | null) => n === null ? '...' : n.toLocaleString();
@@ -414,7 +415,8 @@ function ViewCounter() {
       <div className="flex justify-between items-center">
         <span className="text-sm text-[var(--ctp-subtext1)]">All</span>
         <span className="text-2xl font-mono text-[var(--ctp-text)]">{fmt(totalViews)}</span>
-      </div>
+      </div>git add .
+
       <p className="text-xs text-[var(--ctp-overlay0)] mt-2">
         A real-time global counter tracking every visit from anyone, anywhere.
       </p>
