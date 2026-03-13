@@ -260,7 +260,32 @@ function Home() {
             <span className={`text-[var(--accent-color)] ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
           </h1>
           
-          
+                    {/* Quote */}
+          <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2">
+            <p className="text-xl md:text-2xl text-[var(--ctp-text)] italic mb-2">
+              "Don't let yesterday take up too much of today."
+            </p>
+            <cite className="text-[var(--ctp-subtext0)] text-sm">— My personal motto</cite>
+          </blockquote>
+        </section>
+
+          {/* Bio */}
+          <div className="mb-8 max-w-2xl space-y-3 text-[var(--ctp-subtext1)] leading-relaxed">
+            <p>
+              I'm a 19-year-old aspiring Software Engineer from Moncada, Tarlac, Philippines. 
+              Currently studying BS Computer Science at ICF Interworld Colleges Foundation, 
+              living with my grandmother and learning to code. I'm passionate about creating 
+              software that makes people's lives easier.
+            </p>
+            <p>
+              When I'm not coding, you'll find me skateboarding, listening to{' '}
+              <span className="text-[var(--accent-color)]">Joji</span>,{' '}
+              <span className="text-[var(--accent-color)]">Nujabes</span>, or{' '}
+              <span className="text-[var(--accent-color)]">Radwimps</span>, or gaming with friends. 
+              I believe in embracing failures as lessons and staying true to myself.
+            </p>
+          </div>
+
 
           {/* Status Badges */}
           <div className="flex flex-wrap gap-3 mb-8">
@@ -302,14 +327,6 @@ function Home() {
             </a>
           </div>
           
-          {/* Quote */}
-          <blockquote className="border-l-4 border-[var(--accent-color)] pl-6 py-2">
-            <p className="text-xl md:text-2xl text-[var(--ctp-text)] italic mb-2">
-              "Don't let yesterday take up too much of today."
-            </p>
-            <cite className="text-[var(--ctp-subtext0)] text-sm">— My personal motto</cite>
-          </blockquote>
-        </section>
 
         {/* Featured Projects */}
         <section className="mb-16">
