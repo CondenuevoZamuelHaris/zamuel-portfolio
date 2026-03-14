@@ -992,6 +992,20 @@ function Pics() {
   const [filter, setFilter] = useState('all');
   const [hearts, setHearts] = useState<Record<number, number>>({});
   const [heartAnimations, setHeartAnimations] = useState<Record<number, boolean>>({});
+  const [likedPics, setLikedPics] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    const stored = localStorage.getItem('pic-likes');
+    if (stored) setLikedPics(JSON.parse(stored));
+
+    // Fetch current heart counts from Abacus for all pics
+    [1,2,3,4,5,6,7,8,9].forEach(id => {
+      fetch(`https://abacus.jasoncameron.dev/get/zam.is-a.dev/pic-${id}`)
+        .then(r => r.json())
+        .then(d => { if (typeof d.value === 'number') setHearts(prev => ({ ...prev, [id]: d.value })); })
+        .catch(() => {});
+    });
+  }, []);
 
   const filters = ['All', 'Adventures', 'Friends', 'Family', 'Life', 'Me', 'ROTC'];
 
@@ -1010,13 +1024,22 @@ function Pics() {
   const filteredPics = filter === 'all' ? pics : pics.filter(p => p.category === filter);
 
   const handleDoubleClick = (id: number) => {
-    setHearts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    // Always show animation
     setHeartAnimations(prev => ({ ...prev, [id]: true }));
-    setTimeout(() => {
-      setHeartAnimations(prev => ({ ...prev, [id]: false }));
-    }, 800);
-  };
+    setTimeout(() => setHeartAnimations(prev => ({ ...prev, [id]: false })), 800);
 
+    // Only count if not already liked on this device
+    if (likedPics[id]) return;
+
+    const newLiked = { ...likedPics, [id]: true };
+    setLikedPics(newLiked);
+    localStorage.setItem('pic-likes', JSON.stringify(newLiked));
+
+    fetch(`https://abacus.jasoncameron.dev/hit/zam.is-a.dev/pic-${id}`)
+      .then(r => r.json())
+      .then(d => { if (typeof d.value === 'number') setHearts(prev => ({ ...prev, [id]: d.value })); })
+      .catch(() => setHearts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 })));
+  };
   return (
     <div className="min-h-screen pt-24 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -1069,12 +1092,18 @@ function Pics() {
               )}
 
               {/* Heart Count */}
-              {hearts[pic.id] > 0 && (
+              {(hearts[pic.id] || 0) > 0 && (
                 <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
-                  <Heart size={14} className="text-[var(--ctp-red)] fill-[var(--ctp-red)]" />
+                  <Heart
+                    size={14}
+                    className={likedPics[pic.id]
+                      ? 'text-[var(--ctp-red)] fill-[var(--ctp-red)]'
+                      : 'text-white'}
+                  />
                   <span className="text-white text-sm">{hearts[pic.id]}</span>
                 </div>
-              )}
+              )}git add .
+
             </div>
           ))}
         </div>
