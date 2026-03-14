@@ -393,41 +393,30 @@ function ViewCounter() {
     const yesterdayDate = new Date(now);
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
     const yesterdayKey = yesterdayDate.toISOString().slice(0, 10).replace(/-/g, '');
-
     const sessionKey = 'zam-viewed-' + todayKey;
-    const alreadyCounted = sessionStorage.getItem(sessionKey);
 
-    if (!alreadyCounted) {
-      // First visit today — increment both total and today
-      fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
-        .then(res => res.json())
-        .then(data => setTotalViews(data.count))
-        .catch(() => setTotalViews(null));
+    const hit = (key: string, setter: (n: number) => void) =>
+      fetch(`https://abacus.jasoncameron.dev/hit/zam.is-a.dev/${key}`)
+        .then(r => r.json())
+        .then(d => { if (typeof d.value === 'number') setter(d.value); })
+        .catch(() => setter(0));
 
-      fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${todayKey}/up`)
-        .then(res => res.json())
-        .then(data => setTodayViews(data.count))
-        .catch(() => setTodayViews(null));
+    const get = (key: string, setter: (n: number) => void) =>
+      fetch(`https://abacus.jasoncameron.dev/get/zam.is-a.dev/${key}`)
+        .then(r => r.json())
+        .then(d => { if (typeof d.value === 'number') setter(d.value); })
+        .catch(() => setter(0));
 
+    if (!sessionStorage.getItem(sessionKey)) {
       sessionStorage.setItem(sessionKey, '1');
+      hit('views-all', setTotalViews);
+      hit(`views-${todayKey}`, setTodayViews);
     } else {
-      // Already counted — just read
-      fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views')
-        .then(res => res.json())
-        .then(data => setTotalViews(data.count))
-        .catch(() => setTotalViews(null));
-
-      fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${todayKey}`)
-        .then(res => res.json())
-        .then(data => setTodayViews(data.count))
-        .catch(() => setTodayViews(null));
+      get('views-all', setTotalViews);
+      get(`views-${todayKey}`, setTodayViews);
     }
 
-    // Yesterday — always just read
-    fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${yesterdayKey}`)
-      .then(res => res.json())
-      .then(data => setYesterdayViews(data.count ?? 0))
-      .catch(() => setYesterdayViews(0));
+    get(`views-${yesterdayKey}`, setYesterdayViews);
   }, []);
 
   const fmt = (n: number | null) => n === null ? '...' : n.toLocaleString();
@@ -607,11 +596,12 @@ onClick={() => {
             <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors">ⓘ</span>
             <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip2:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg">
               <p className="mb-2">A real-time global counter tracking every visit from anyone, anywhere.</p>
-              <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
+              <p className="text-[var(--ctp-overlay0)]">Powered by Abacus</p>
             </div>
           </div>
         </div>
-        <ViewCounter />
+        <ViewCounter />git add .
+
       </div>
 
       {/* Let's Connect */}
