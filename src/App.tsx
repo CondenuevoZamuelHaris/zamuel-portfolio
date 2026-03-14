@@ -993,8 +993,10 @@ function Pics() {
   return (
     <div className="min-h-screen pt-24 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-[var(--ctp-text)] mb-2">Pics</h1>
-        <p className="text-[var(--ctp-subtext0)] mb-8">Moments captured along the way. Double-click to show some love!</p>
+<h1 className="text-4xl font-bold text-[var(--ctp-text)] mb-2">
+          pics <span className="text-sm font-normal text-[var(--ctp-overlay0)] ml-1">[{filteredPics.length}]</span>
+        </h1>
+        <p className="text-[var(--ctp-subtext0)] mb-6">Moments from my life — skateboarding, adventures, tech, ROTC, and time with friends.</p>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-8">
@@ -1659,7 +1661,7 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <Router basename="/zamuel-portfolio/">
+      <Router basename="/">
         <AppContent />
       </Router>
     </ThemeProvider>
