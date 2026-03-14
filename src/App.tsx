@@ -1253,13 +1253,39 @@ function Pics() {
           <div
             className="relative max-w-5xl w-full mx-16 flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => {
+              e.preventDefault();
+              const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+              if (!img) return;
+              const current = parseFloat(img.style.transform?.replace('scale(','').replace(')','') || '1');
+              const next = e.deltaY < 0 ? Math.min(current + 0.1, 3) : Math.max(current - 0.1, 0.5);
+              img.style.transform = `scale(${next})`;
+              img.style.transition = 'transform 0.1s ease';
+            }}
           >
-            <img
-              src={currentPic.src}
-              alt={currentPic.placeholder}
-              className="max-h-[82vh] w-auto object-contain rounded-lg select-none"
-              draggable={false}
-            />
+            <div style={{
+              overflow: 'hidden',
+              maxHeight: '82vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '8px',
+            }}>
+              <img
+                src={currentPic.src}
+                alt={currentPic.placeholder}
+                className="select-none"
+                draggable={false}
+                style={{
+                  maxHeight: '82vh',
+                  width: 'auto',
+                  transformOrigin: 'center center',
+                  display: 'block',
+                  margin: '-4% -3%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
             <div className="w-full flex items-center justify-between pt-3 px-1">
               <span className="text-sm text-[var(--ctp-subtext0)]">{currentPic.placeholder}</span>
               <span className="text-sm text-[var(--ctp-overlay0)]">{currentIdx + 1} / {filteredPics.length}</span>
