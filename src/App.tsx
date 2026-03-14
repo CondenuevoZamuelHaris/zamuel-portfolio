@@ -1206,8 +1206,8 @@ function Pics() {
             <div
               key={pic.id}
               className="masonry-item relative group cursor-pointer overflow-hidden rounded-lg"
-              onDoubleClick={() => handleDoubleClick(pic.id)}
-              onClick={() => pic.src && setSelectedPic(pic.id)}
+              onDoubleClick={(e) => { e.stopPropagation(); handleDoubleClick(pic.id); }}
+              onClick={() => { if (pic.src) setSelectedPic(pic.id); }}
             >
               <div className={`bg-[var(--ctp-surface0)] rounded-lg overflow-hidden ${
                 index % 3 === 0 ? 'h-64' : index % 3 === 1 ? 'h-48' : 'h-56'
@@ -1266,7 +1266,7 @@ function Pics() {
       {/* Lightbox — uses the same CSS variables, no new styling */}
       {selectedPic !== null && currentPic && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-[var(--ctp-crust)]/90 backdrop-blur-sm"
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedPic(null)}
         >
           {/* Prev */}
@@ -1294,29 +1294,20 @@ function Pics() {
               img.style.transition = 'transform 0.1s ease';
             }}
           >
-            <div style={{
-              overflow: 'hidden',
-              maxHeight: '82vh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '8px',
-            }}>
-              <img
-                src={currentPic.src}
-                alt={currentPic.placeholder}
-                className="select-none"
-                draggable={false}
-                style={{
-                  maxHeight: '82vh',
-                  width: 'auto',
-                  transformOrigin: 'center center',
-                  display: 'block',
-                  margin: '-4% -3%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
+            <img
+              src={currentPic.src}
+              alt={currentPic.placeholder}
+              className="select-none rounded-lg"
+              draggable={false}
+              style={{
+                maxHeight: '88vh',
+                maxWidth: '80vw',
+                width: 'auto',
+                height: 'auto',
+                display: 'block',
+                objectFit: 'contain',
+              }}
+            />
             <div className="w-full flex items-center justify-between pt-3 px-1">
               <span className="text-sm text-[var(--ctp-subtext0)]">{currentPic.placeholder}</span>
               <span className="text-sm text-[var(--ctp-overlay0)]">{currentIdx + 1} / {filteredPics.length}</span>
