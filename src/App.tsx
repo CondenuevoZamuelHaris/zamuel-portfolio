@@ -557,10 +557,10 @@ useEffect(() => {
         <div className="w-full flex justify-end mb-1">
         <div className="relative group/tooltip">
           <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors text-sm">ⓘ</span>
-          <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg text-left">
+          <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip:opacity-100 transition-opacity z-10 shadow-lg text-left">
             <p className="font-semibold text-[var(--ctp-text)] mb-1">CLICK ME</p>
             <p className="mb-2">A real-time global counter tracking every click from everyone visiting this site. Completely pointless, yet oddly satisfying.</p>
-            <p className="text-[var(--ctp-overlay0)]">Powered by counterapi</p>
+            <p className="text-[var(--ctp-overlay0)]">Powered by <a href="https://v2.jasoncameron.dev/abacus/" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--accent-color)] transition-colors">Abacus</a></p>
 </div>
         </div>
         </div>
@@ -602,9 +602,9 @@ onClick={() => {
           <h3 className="text-lg font-semibold text-[var(--ctp-text)]">View Counter</h3>
 <div className="relative group/tooltip2">
             <span className="text-[var(--ctp-overlay0)] cursor-pointer hover:text-[var(--accent-color)] transition-colors">ⓘ</span>
-            <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip2:opacity-100 pointer-events-none transition-opacity z-10 shadow-lg">
+            <div className="absolute right-0 top-6 w-64 bg-[var(--ctp-mantle)] border border-[var(--ctp-surface1)] rounded-lg p-3 text-xs text-[var(--ctp-subtext1)] opacity-0 group-hover/tooltip2:opacity-100 transition-opacity z-10 shadow-lg">
               <p className="mb-2">A real-time global counter tracking every visit from anyone, anywhere.</p>
-              <p className="text-[var(--ctp-overlay0)]">Powered by Abacus</p>
+              <p className="text-[var(--ctp-overlay0)]">Powered by <a href="https://v2.jasoncameron.dev/abacus/" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--accent-color)] transition-colors">Abacus</a></p>
             </div>
           </div>
         </div>
