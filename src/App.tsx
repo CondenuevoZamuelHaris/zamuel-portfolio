@@ -448,7 +448,7 @@ function ViewCounter() {
       </div>
     </div>
   );
-}         
+}
 
 // Dashboard Highlights Component
 function DashboardHighlights() {
