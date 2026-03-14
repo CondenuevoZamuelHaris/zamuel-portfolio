@@ -4,7 +4,7 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { 
   Github, Linkedin, Instagram, Twitter, Mail, MapPin, Clock, 
   Terminal as TerminalIcon, FileText, Award, X, Menu, ExternalLink, Heart,
-  Calendar, ChevronRight, Code2, Cpu, Gamepad2, Dumbbell,
+  Calendar, ChevronRight, ChevronLeft, Code2, Cpu, Gamepad2, Dumbbell,
   Shield, Bike
 } from 'lucide-react';
 import type { AccentColor } from './context/ThemeContext';
@@ -1024,48 +1024,103 @@ function Projects() {
   );
 }
 
-// Pics Page
+// ─── DROP-IN REPLACEMENT for the Pics function in App.tsx ───────────────────
+// Same design, same CSS variables — just replace the old Pics() with this one.
+
 function Pics() {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('All');
   const [hearts, setHearts] = useState<Record<number, number>>({});
   const [heartAnimations, setHeartAnimations] = useState<Record<number, boolean>>({});
   const [likedPics, setLikedPics] = useState<Record<number, boolean>>({});
+  const [selectedPic, setSelectedPic] = useState<number | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('pic-likes');
     if (stored) setLikedPics(JSON.parse(stored));
 
-    // Fetch current heart counts from Abacus for all pics
-    [1,2,3,4,5,6,7,8,9].forEach(id => {
-      fetch(`https://abacus.jasoncameron.dev/get/zam.is-a.dev/pic-${id}`)
+    pics.forEach(pic => {
+      fetch(`https://abacus.jasoncameron.dev/get/zam.is-a.dev/pic-${pic.id}`)
         .then(r => r.json())
-        .then(d => { if (typeof d.value === 'number') setHearts(prev => ({ ...prev, [id]: d.value })); })
+        .then(d => { if (typeof d.value === 'number') setHearts(prev => ({ ...prev, [pic.id]: d.value })); })
         .catch(() => {});
     });
   }, []);
 
+  // Close lightbox on Escape / arrow keys
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (selectedPic === null) return;
+      if (e.key === 'Escape') setSelectedPic(null);
+      if (e.key === 'ArrowRight') {
+        const idx = filteredPics.findIndex(p => p.id === selectedPic);
+        if (idx < filteredPics.length - 1) setSelectedPic(filteredPics[idx + 1].id);
+      }
+      if (e.key === 'ArrowLeft') {
+        const idx = filteredPics.findIndex(p => p.id === selectedPic);
+        if (idx > 0) setSelectedPic(filteredPics[idx - 1].id);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [selectedPic]);
+
   const filters = ['All', 'Adventures', 'Friends', 'Family', 'Life', 'Me', 'ROTC'];
 
   const pics = [
-    { id: 1, category: 'adventures', placeholder: 'Adventure time' },
-    { id: 2, category: 'friends', placeholder: 'With friends' },
-    { id: 3, category: 'family', placeholder: 'Family moments' },
-    { id: 4, category: 'life', placeholder: 'Everyday life' },
-    { id: 5, category: 'me', placeholder: 'Just me' },
-    { id: 6, category: 'rotc', placeholder: 'ROTC training' },
-    { id: 7, category: 'adventures', placeholder: 'Exploring' },
-    { id: 8, category: 'friends', placeholder: 'Good times' },
-    { id: 9, category: 'life', placeholder: 'Daily vibes' },
+    // ── ROTC ──────────────────────────────────────────────────────────────────
+    { id: 1,  category: 'rotc',       src: '/rotc/rotc-casual-group.jpg',      placeholder: 'Post-training hang' },
+    { id: 2,  category: 'rotc',       src: '/rotc/rotc-van-selfie.jpg',         placeholder: 'Late night ride' },
+    { id: 3,  category: 'rotc',       src: '/rotc/rotc-staircase-1.jpg',        placeholder: 'Staircase gang · Jan 15 2026' },
+    { id: 4,  category: 'rotc',       src: '/rotc/rotc-staircase-2.jpg',        placeholder: 'Still the staircase · Jan 15 2026' },
+    { id: 5,  category: 'rotc',       src: '/rotc/rotc-night-market.jpg',       placeholder: 'Late night grocery run' },
+    { id: 6,  category: 'rotc',       src: '/rotc/rotc-night-selfie.jpg',       placeholder: 'After hours' },
+    { id: 7,  category: 'rotc',       src: '/rotc/rotc-rooftop-sunset-wide.jpg',placeholder: 'Rooftop sundown' },
+    { id: 8,  category: 'rotc',       src: '/rotc/rotc-rooftop-sunset-close.jpg',placeholder: 'Golden hour up top' },
+    { id: 9,  category: 'rotc',       src: '/rotc/rotc-circle-worm-eye.jpg',    placeholder: 'Looking up' },
+    { id: 10, category: 'rotc',       src: '/rotc/rotc-dress-flex-1.jpg',       placeholder: 'Best dressed unit' },
+    { id: 11, category: 'rotc',       src: '/rotc/rotc-dress-flex-2.jpg',       placeholder: 'Strength in style' },
+    { id: 12, category: 'rotc',       src: '/rotc/rotc-dress-indoor.jpg',       placeholder: 'Indoor fashion show' },
+    { id: 13, category: 'rotc',       src: '/rotc/rotc-dress-outdoor.jpg',      placeholder: 'Full squad, dressed up' },
+    { id: 14, category: 'rotc',       src: '/rotc/rotc-drill-kneeling.jpg',     placeholder: 'Drill formation' },
+    { id: 15, category: 'rotc',       src: '/rotc/rotc-drill-standing.jpg',     placeholder: 'At attention' },
+    { id: 16, category: 'rotc',       src: '/rotc/rotc-camo-selfie.jpg',        placeholder: 'Uniform check' },
+    { id: 17, category: 'rotc',       src: '/rotc/rotc-sashes-line-1.jpg',      placeholder: 'Sash formation' },
+    { id: 18, category: 'rotc',       src: '/rotc/rotc-sashes-line-2.jpg',      placeholder: 'Ready to march' },
+    { id: 19, category: 'rotc',       src: '/rotc/rotc-sashes-line-3.jpg',      placeholder: 'Full line-up' },
+    { id: 20, category: 'rotc',       src: '/rotc/rotc-small-sash-1.jpg',       placeholder: 'Alpha ladies' },
+    { id: 21, category: 'rotc',       src: '/rotc/rotc-small-sash-2.jpg',       placeholder: 'On duty' },
+    { id: 22, category: 'rotc',       src: '/rotc/rotc-class-camo-1.jpg',       placeholder: 'Section Alpha' },
+    { id: 23, category: 'rotc',       src: '/rotc/rotc-class-camo-2.jpg',       placeholder: 'Section Bravo' },
+    { id: 24, category: 'rotc',       src: '/rotc/rotc-class-camo-3.jpg',       placeholder: 'End of day' },
+    { id: 25, category: 'rotc',       src: '/rotc/rotc-big-rooftop-1.jpg',      placeholder: 'Battalion muster' },
+    { id: 26, category: 'rotc',       src: '/rotc/rotc-big-rooftop-2.jpg',      placeholder: 'After the rain' },
+    { id: 27, category: 'rotc',       src: '/rotc/rotc-big-rooftop-3.jpg',      placeholder: 'Full battalion' },
+    { id: 28, category: 'rotc',       src: '/rotc/rotc-night-heart.jpg',        placeholder: 'Love the corps' },
+    { id: 29, category: 'rotc',       src: '/rotc/rotc-night-small-group.jpg',  placeholder: 'Night shift crew' },
+    { id: 30, category: 'rotc',       src: '/rotc/rotc-morning-group.jpg',      placeholder: 'Early birds' },
+    { id: 31, category: 'rotc',       src: '/rotc/rotc-mixed-crowd.jpg',        placeholder: 'Everyone showed up' },
+    { id: 32, category: 'rotc',       src: '/rotc/rotc-competition.jpg',        placeholder: 'Battle of the corps' },
+    { id: 33, category: 'rotc',       src: '/rotc/rotc-promenade-stage-1.jpg',  placeholder: 'JHS Promenade · Feb 11 2026' },
+    { id: 34, category: 'rotc',       src: '/rotc/rotc-promenade-stage-2.jpg',  placeholder: 'Under the lights' },
+    { id: 35, category: 'rotc',       src: '/rotc/rotc-promenade-fun.jpg',      placeholder: 'Promenade vibes' },
+    { id: 36, category: 'rotc',       src: '/rotc/rotc-photobooth-print.jpg',   placeholder: 'Photobooth memory' },
+    { id: 37, category: 'rotc',       src: '/rotc/rotc-photobooth-digital.jpg', placeholder: 'Captured the night' },
+    // ── Placeholders for other categories (add your own images later) ─────────
+    { id: 38, category: 'adventures', src: '',  placeholder: 'Adventure time' },
+    { id: 39, category: 'friends',    src: '',  placeholder: 'With friends' },
+    { id: 40, category: 'family',     src: '',  placeholder: 'Family moments' },
+    { id: 41, category: 'life',       src: '',  placeholder: 'Everyday life' },
+    { id: 42, category: 'me',         src: '',  placeholder: 'Just me' },
   ];
 
   const filteredPics = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
+  const currentPic = pics.find(p => p.id === selectedPic);
+  const currentIdx = filteredPics.findIndex(p => p.id === selectedPic);
 
   const handleDoubleClick = (id: number) => {
-    // Always show animation
     setHeartAnimations(prev => ({ ...prev, [id]: true }));
     setTimeout(() => setHeartAnimations(prev => ({ ...prev, [id]: false })), 800);
 
-    // Only count if not already liked on this device
     if (likedPics[id]) return;
 
     const newLiked = { ...likedPics, [id]: true };
@@ -1077,15 +1132,18 @@ function Pics() {
       .then(d => { if (typeof d.value === 'number') setHearts(prev => ({ ...prev, [id]: d.value })); })
       .catch(() => setHearts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 })));
   };
+
   return (
     <div className="min-h-screen pt-24 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
-<h1 className="text-4xl font-bold text-[var(--ctp-text)] mb-2">
+        <h1 className="text-4xl font-bold text-[var(--ctp-text)] mb-2">
           pics <span className="text-sm font-normal text-[var(--ctp-overlay0)] ml-1">[{filteredPics.length}]</span>
         </h1>
-        <p className="text-[var(--ctp-subtext0)] mb-6">Moments from my life — adventures, friends, family, ROTC, personal growth, and the experiences that make me who I am.</p>
+        <p className="text-[var(--ctp-subtext0)] mb-6">
+          Moments from my life — adventures, friends, family, ROTC, personal growth, and the experiences that make me who I am.
+        </p>
 
-        {/* Filters */}
+        {/* Filters — identical to original */}
         <div className="flex flex-wrap gap-2 mb-8">
           {filters.map((f) => (
             <button
@@ -1102,27 +1160,47 @@ function Pics() {
           ))}
         </div>
 
-        {/* Masonry Grid */}
+        {/* Masonry Grid — identical class names + logic as original */}
         <div className="masonry-grid">
           {filteredPics.map((pic, index) => (
-            <div 
-              key={pic.id} 
+            <div
+              key={pic.id}
               className="masonry-item relative group cursor-pointer overflow-hidden rounded-lg"
               onDoubleClick={() => handleDoubleClick(pic.id)}
+              onClick={() => pic.src && setSelectedPic(pic.id)}
             >
               <div className={`bg-[var(--ctp-surface0)] rounded-lg overflow-hidden ${
                 index % 3 === 0 ? 'h-64' : index % 3 === 1 ? 'h-48' : 'h-56'
               }`}>
-                <div className="w-full h-full bg-gradient-to-br from-[var(--ctp-surface1)] to-[var(--ctp-surface2)] flex items-center justify-center">
-                  <span className="text-[var(--ctp-overlay0)] text-sm">{pic.placeholder}</span>
-                </div>
+                {pic.src ? (
+                  <img
+                    src={pic.src}
+                    alt={pic.placeholder}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const parent = e.currentTarget.parentElement;
+                      if (parent && !parent.querySelector('.img-fallback')) {
+                        const div = document.createElement('div');
+                        div.className = 'img-fallback w-full h-full bg-gradient-to-br from-[var(--ctp-surface1)] to-[var(--ctp-surface2)] flex items-center justify-center';
+                        div.innerHTML = `<span style="color:var(--ctp-overlay0);font-size:0.75rem">${pic.placeholder}</span>`;
+                        parent.appendChild(div);
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[var(--ctp-surface1)] to-[var(--ctp-surface2)] flex items-center justify-center">
+                    <span className="text-[var(--ctp-overlay0)] text-sm">{pic.placeholder}</span>
+                  </div>
+                )}
               </div>
-              
+
               {/* Heart Animation */}
               {heartAnimations[pic.id] && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <Heart 
-                    size={64} 
+                  <Heart
+                    size={64}
                     className="text-[var(--ctp-red)] fill-[var(--ctp-red)] animate-heart"
                   />
                 </div>
@@ -1144,10 +1222,62 @@ function Pics() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox — uses the same CSS variables, no new styling */}
+      {selectedPic !== null && currentPic && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-[var(--ctp-crust)]/90 backdrop-blur-sm"
+          onClick={() => setSelectedPic(null)}
+        >
+          {/* Prev */}
+          {currentIdx > 0 && (
+            <button
+              className="absolute left-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
+              onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx - 1].id); }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            className="relative max-w-5xl w-full mx-16 flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentPic.src}
+              alt={currentPic.placeholder}
+              className="max-h-[82vh] w-auto object-contain rounded-lg select-none"
+              draggable={false}
+            />
+            <div className="w-full flex items-center justify-between pt-3 px-1">
+              <span className="text-sm text-[var(--ctp-subtext0)]">{currentPic.placeholder}</span>
+              <span className="text-sm text-[var(--ctp-overlay0)]">{currentIdx + 1} / {filteredPics.length}</span>
+            </div>
+          </div>
+
+          {/* Next */}
+          {currentIdx < filteredPics.length - 1 && (
+            <button
+              className="absolute right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
+              onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx + 1].id); }}
+            >
+              <ChevronRight size={32} />
+            </button>
+          )}
+
+          {/* Close */}
+          <button
+            className="absolute top-4 right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
+            onClick={() => setSelectedPic(null)}
+          >
+            <X size={22} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-
 // Posts Page
 function Posts() {
   const posts = [
