@@ -79,6 +79,7 @@ function Navigation() {
           </div>
 
           <button
+            aria-label="Open navigation menu"
             onClick={() => setIsOpen(true)}
             className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--ctp-surface0)] text-[var(--ctp-text)] text-sm hover:bg-[var(--ctp-surface1)] transition-colors"
           >
@@ -99,6 +100,7 @@ function Navigation() {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-lg font-bold text-[var(--ctp-text)]">Navigation</h2>
               <button 
+                aria-label="Close navigation menu"
                 onClick={() => setIsOpen(false)}
                 className="p-2 rounded-lg hover:bg-[var(--ctp-surface0)] transition-colors"
               >
@@ -1239,6 +1241,7 @@ function Pics() {
           {/* Prev */}
           {currentIdx > 0 && (
             <button
+              aria-label="Previous photo"
               className="absolute left-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
               onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx - 1].id); }}
             >
@@ -1266,6 +1269,7 @@ function Pics() {
           {/* Next */}
           {currentIdx < filteredPics.length - 1 && (
             <button
+              aria-label="Next photo"
               className="absolute right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
               onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx + 1].id); }}
             >
@@ -1275,6 +1279,7 @@ function Pics() {
 
           {/* Close */}
           <button
+            aria-label="Close"
             className="absolute top-4 right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
             onClick={() => setSelectedPic(null)}
           >
@@ -1704,6 +1709,7 @@ Type 'repo' to view the source code on GitHub.
               <span className="text-[var(--ctp-text)]">$</span>
               <input
                 type="text"
+                aria-label="Terminal input"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 className="flex-1 bg-transparent text-[var(--ctp-text)] outline-none"
