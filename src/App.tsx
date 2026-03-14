@@ -993,18 +993,18 @@ function Pics() {
   const [hearts, setHearts] = useState<Record<number, number>>({});
   const [heartAnimations, setHeartAnimations] = useState<Record<number, boolean>>({});
 
-  const filters = ['all', 'skateboarding', 'adventures', 'tech', 'rotc', 'friends'];
+  const filters = ['All', 'Adventures', 'Friends', 'Family', 'Life', 'Me', 'ROTC'];
 
   const pics = [
-    { id: 1, category: 'skateboarding', placeholder: 'Skateboarding moment' },
-    { id: 2, category: 'adventures', placeholder: 'Adventure time' },
-    { id: 3, category: 'tech', placeholder: 'Coding setup' },
-    { id: 4, category: 'rotc', placeholder: 'ROTC training' },
-    { id: 5, category: 'friends', placeholder: 'With friends' },
-    { id: 6, category: 'skateboarding', placeholder: 'Skate park' },
+    { id: 1, category: 'adventures', placeholder: 'Adventure time' },
+    { id: 2, category: 'friends', placeholder: 'With friends' },
+    { id: 3, category: 'family', placeholder: 'Family moments' },
+    { id: 4, category: 'life', placeholder: 'Everyday life' },
+    { id: 5, category: 'me', placeholder: 'Just me' },
+    { id: 6, category: 'rotc', placeholder: 'ROTC training' },
     { id: 7, category: 'adventures', placeholder: 'Exploring' },
-    { id: 8, category: 'tech', placeholder: 'Project work' },
-    { id: 9, category: 'friends', placeholder: 'Good times' },
+    { id: 8, category: 'friends', placeholder: 'Good times' },
+    { id: 9, category: 'life', placeholder: 'Daily vibes' },
   ];
 
   const filteredPics = filter === 'all' ? pics : pics.filter(p => p.category === filter);
