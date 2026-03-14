@@ -384,41 +384,71 @@ function Home() {
 
 function ViewCounter() {
   const [todayViews, setTodayViews] = useState<number | null>(null);
+  const [yesterdayViews, setYesterdayViews] = useState<number | null>(null);
   const [totalViews, setTotalViews] = useState<number | null>(null);
 
   useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    
-    fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
-      .then(res => res.json())
-      .then(data => setTotalViews(data.count))
-      .catch(() => setTotalViews(null));
+    const now = new Date();
+    const todayKey = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const yesterdayDate = new Date(now);
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterdayKey = yesterdayDate.toISOString().slice(0, 10).replace(/-/g, '');
 
-    fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${today}/up`)
+    const sessionKey = 'zam-viewed-' + todayKey;
+    const alreadyCounted = sessionStorage.getItem(sessionKey);
+
+    if (!alreadyCounted) {
+      // First visit today — increment both total and today
+      fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views/up')
+        .then(res => res.json())
+        .then(data => setTotalViews(data.count))
+        .catch(() => setTotalViews(null));
+
+      fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${todayKey}/up`)
+        .then(res => res.json())
+        .then(data => setTodayViews(data.count))
+        .catch(() => setTodayViews(null));
+
+      sessionStorage.setItem(sessionKey, '1');
+    } else {
+      // Already counted — just read
+      fetch('https://api.counterapi.dev/v1/zamuel-portfolio/views')
+        .then(res => res.json())
+        .then(data => setTotalViews(data.count))
+        .catch(() => setTotalViews(null));
+
+      fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${todayKey}`)
+        .then(res => res.json())
+        .then(data => setTodayViews(data.count))
+        .catch(() => setTodayViews(null));
+    }
+
+    // Yesterday — always just read
+    fetch(`https://api.counterapi.dev/v1/zamuel-portfolio/views-${yesterdayKey}`)
       .then(res => res.json())
-      .then(data => setTodayViews(data.count))
-      .catch(() => setTodayViews(null));
+      .then(data => setYesterdayViews(data.count ?? 0))
+      .catch(() => setYesterdayViews(0));
   }, []);
 
   const fmt = (n: number | null) => n === null ? '...' : n.toLocaleString();
 
   return (
-    <div className="space-y-3">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center pb-3 border-b border-[var(--ctp-surface1)]">
         <span className="text-sm text-[var(--ctp-subtext1)]">Today</span>
-        <span className="text-2xl font-mono text-[var(--accent-color)]">{fmt(todayViews)}</span>
+        <span className="text-2xl font-mono font-bold text-[var(--accent-color)]">{fmt(todayViews)}</span>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pb-3 border-b border-[var(--ctp-surface1)]">
         <span className="text-sm text-[var(--ctp-subtext1)]">Yesterday</span>
-        <span className="text-2xl font-mono text-[var(--ctp-text)]">—</span>
+        <span className="text-2xl font-mono font-bold text-[var(--ctp-text)]">{fmt(yesterdayViews)}</span>
       </div>
       <div className="flex justify-between items-center">
         <span className="text-sm text-[var(--ctp-subtext1)]">All</span>
-        <span className="text-2xl font-mono text-[var(--ctp-text)]">{fmt(totalViews)}</span>
+        <span className="text-2xl font-mono font-bold text-[var(--ctp-text)]">{fmt(totalViews)}</span>
       </div>
     </div>
   );
-}              
+}         
 
 // Dashboard Highlights Component
 function DashboardHighlights() {
