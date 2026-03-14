@@ -462,11 +462,11 @@ const [clickCount, setClickCount] = useState(0);
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks')
+useEffect(() => {
+    fetch('https://abacus.jasoncameron.dev/get/zam.is-a.dev/clicks')
       .then(res => res.json())
       .then(data => {
-        setClickCount(data.count || 0);
+        setClickCount(data.value || 0);
         setIsLoading(false);
       })
       .catch(() => {
@@ -577,12 +577,12 @@ const [clickCount, setClickCount] = useState(0);
           {isLoading ? '...' : clickCount.toLocaleString()}
         </p>
         <button
-          onClick={() => {
-            fetch('https://api.counterapi.dev/v1/zamuel-portfolio/clicks/up')
+onClick={() => {
+            fetch('https://abacus.jasoncameron.dev/hit/zam.is-a.dev/clicks')
               .then(res => res.json())
               .then(data => {
-                setClickCount(data.count);
-                localStorage.setItem('portfolio-clicks', String(data.count));
+                setClickCount(data.value);
+                localStorage.setItem('portfolio-clicks', String(data.value));
               })
               .catch(() => {
                 setClickCount(c => {
