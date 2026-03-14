@@ -1083,7 +1083,7 @@ function Pics() {
 <h1 className="text-4xl font-bold text-[var(--ctp-text)] mb-2">
           pics <span className="text-sm font-normal text-[var(--ctp-overlay0)] ml-1">[{filteredPics.length}]</span>
         </h1>
-        <p className="text-[var(--ctp-subtext0)] mb-6">Moments from my life — skateboarding, adventures, tech, ROTC, and time with friends.</p>
+        <p className="text-[var(--ctp-subtext0)] mb-6">Moments from my life — adventures, friends, family, ROTC, personal growth, and the experiences that make me who I am.</p>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-8">
