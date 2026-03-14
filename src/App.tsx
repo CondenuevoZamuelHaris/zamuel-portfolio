@@ -758,8 +758,7 @@ function About() {
   const reflections = [
     {
       title: 'Psychological Self',
-      content: 'I am an introvert who finds comfort in solitude but also values deep connections with others. I tend to overthink sometimes, but I am working on being more present in the moment.'
-    },
+content: 'I am an extrovert who enjoys being around people and socializing, but I also value meaningful and genuine connections with others. I can be very expressive, and I continue learning how to stay present and enjoy every moment. I also choose the people I surround myself with wisely, because I believe that the people around you can influence the direction of your future, just like how choosing who you sit with on the first day of class can shape what kind of person you become.'    },
     {
       title: 'Physical Self',
       content: 'My skateboarding accident taught me to appreciate my body more. I am working on staying active and healthy, understanding that physical well-being affects everything else.'
@@ -880,15 +879,53 @@ function About() {
           )}
 
           {activeTab === 'reflection' && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              {reflections.map((reflection) => (
-                <div key={reflection.title} className="p-4 rounded-lg bg-[var(--ctp-surface1)]">
-                  <h3 className="font-semibold text-[var(--ctp-text)] mb-2">{reflection.title}</h3>
-                  <p className="text-sm text-[var(--ctp-subtext0)] leading-relaxed">{reflection.content}</p>
+            <div className="space-y-6">
+              {/* Quote */}
+              <div className="p-4 rounded-lg bg-[var(--ctp-surface1)] border-l-4 border-[var(--accent-color)]">
+                <p className="text-[var(--ctp-text)] italic font-medium mb-1">
+                  "Life won't go the way you want it to be so just go with the flow and let things be"
+                </p>
+                <p className="text-sm text-[var(--ctp-subtext0)]">Have faith in GOD and believe in yourself</p>
+              </div>
+
+              {/* What Matters Most */}
+              <div>
+                <h3 className="font-semibold text-[var(--ctp-text)] mb-2 flex items-center gap-2">
+                  <span>👥</span> What Matters Most
+                </h3>
+                <p className="text-sm text-[var(--ctp-subtext1)] leading-relaxed">
+                  Whenever I feel drained or burned out from school, buried under projects and responsibilities, 
+                  I take time to spend with my friends. It reminds me that life shouldn't revolve around school alone. 
+                  Every time I'm with friends and family, I feel truly thankful, knowing they're there to support me 
+                  even at my lowest points. We share stories, enjoy drinks, and make the most of the day. Being with 
+                  them helps me recharge my spirit and reminds me to appreciate what I have: loyal friends and a loving family.
+                </p>
+              </div>
+
+              {/* Personal Values */}
+              <div>
+                <h3 className="font-semibold text-[var(--ctp-text)] mb-3">Personal Values</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {['Family', 'Friendship', 'Perseverance', 'Independence', 'Gratitude', 'Faith'].map(v => (
+                    <div key={v} className="p-3 rounded-lg bg-[var(--ctp-surface1)] text-center text-sm text-[var(--ctp-text)]">
+                      {v}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              {/* Original reflections */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {reflections.map((reflection) => (
+                  <div key={reflection.title} className="p-4 rounded-lg bg-[var(--ctp-surface1)]">
+                    <h3 className="font-semibold text-[var(--ctp-text)] mb-2">{reflection.title}</h3>
+                    <p className="text-sm text-[var(--ctp-subtext0)] leading-relaxed">{reflection.content}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
+          
         </div>
 
       </div>
@@ -1022,6 +1059,7 @@ function Pics() {
   ];
 
   const filteredPics = filter === 'all' ? pics : pics.filter(p => p.category === filter);
+  const displayCount = filteredPics.length;
 
   const handleDoubleClick = (id: number) => {
     // Always show animation
@@ -1070,7 +1108,7 @@ function Pics() {
           {filteredPics.map((pic, index) => (
             <div 
               key={pic.id} 
-              className="masonry-item relative group cursor-pointer"
+              className="masonry-item relative group cursor-pointer overflow-hidden rounded-lg"
               onDoubleClick={() => handleDoubleClick(pic.id)}
             >
               <div className={`bg-[var(--ctp-surface0)] rounded-lg overflow-hidden ${
@@ -1102,8 +1140,7 @@ function Pics() {
                   />
                   <span className="text-white text-sm">{hearts[pic.id]}</span>
                 </div>
-              )}git add .
-
+              )}
             </div>
           ))}
         </div>
