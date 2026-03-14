@@ -443,6 +443,7 @@ function ViewCounter() {
 function DashboardHighlights() {
   const { theme, accentColor, backgroundEffect, setTheme, setAccentColor, setBackgroundEffect } = useTheme();
 const [clickCount, setClickCount] = useState(0);
+  const [myClicks, setMyClicks] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -452,6 +453,7 @@ const [clickCount, setClickCount] = useState(0);
   }, []);
 
 useEffect(() => {
+    setMyClicks(parseInt(localStorage.getItem('portfolio-clicks-mine') || '0'));
     fetch('https://abacus.jasoncameron.dev/get/zam.is-a.dev/clicks')
       .then(res => res.json())
       .then(data => {
@@ -569,9 +571,12 @@ useEffect(() => {
 onClick={() => {
             fetch('https://abacus.jasoncameron.dev/hit/zam.is-a.dev/clicks')
               .then(res => res.json())
-              .then(data => {
+.then(data => {
                 setClickCount(data.value);
                 localStorage.setItem('portfolio-clicks', String(data.value));
+                const mine = parseInt(localStorage.getItem('portfolio-clicks-mine') || '0') + 1;
+                localStorage.setItem('portfolio-clicks-mine', String(mine));
+                setMyClicks(mine);
               })
               .catch(() => {
                 setClickCount(c => {
@@ -579,13 +584,16 @@ onClick={() => {
                   localStorage.setItem('portfolio-clicks', String(next));
                   return next;
                 });
+                const mine = parseInt(localStorage.getItem('portfolio-clicks-mine') || '0') + 1;
+                localStorage.setItem('portfolio-clicks-mine', String(mine));
+                setMyClicks(mine);
               });
           }}
           className="w-full py-3 rounded-lg bg-[var(--accent-color)] text-[var(--ctp-crust)] hover:opacity-80 transition-opacity mb-4 font-bold tracking-widest text-sm"
         >
           CLICK ME
         </button>
-        <p className="text-sm text-[var(--ctp-subtext0)]">you've clicked <span className="text-[var(--accent-color)]">{isLoading ? '...' : clickCount.toLocaleString()}</span> times</p>
+<p className="text-sm text-[var(--ctp-subtext0)]">you've clicked <span className="text-[var(--accent-color)]">{myClicks.toLocaleString()}</span> times</p>
       </div>
 
 {/* View Counter */}
@@ -600,8 +608,7 @@ onClick={() => {
             </div>
           </div>
         </div>
-        <ViewCounter />git add .
-
+        <ViewCounter />
       </div>
 
       {/* Let's Connect */}
