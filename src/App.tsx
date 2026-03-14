@@ -1052,17 +1052,19 @@ function Pics() {
       if (selectedPic === null) return;
       if (e.key === 'Escape') setSelectedPic(null);
       if (e.key === 'ArrowRight') {
-        const idx = filteredPics.findIndex(p => p.id === selectedPic);
-        if (idx < filteredPics.length - 1) setSelectedPic(filteredPics[idx + 1].id);
+        const filtered = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
+        const idx = filtered.findIndex(p => p.id === selectedPic);
+        if (idx < filtered.length - 1) setSelectedPic(filtered[idx + 1].id);
       }
       if (e.key === 'ArrowLeft') {
-        const idx = filteredPics.findIndex(p => p.id === selectedPic);
-        if (idx > 0) setSelectedPic(filteredPics[idx - 1].id);
+        const filtered = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
+        const idx = filtered.findIndex(p => p.id === selectedPic);
+        if (idx > 0) setSelectedPic(filtered[idx - 1].id);
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [selectedPic]);
+  }, [selectedPic, filter]);
 
   const filters = ['All', 'Adventures', 'Friends', 'Family', 'Life', 'Me', 'ROTC'];
 
@@ -1141,6 +1143,11 @@ function Pics() {
         </h1>
         <p className="text-[var(--ctp-subtext0)] mb-6">
           Moments from my life — adventures, friends, family, ROTC, personal growth, and the experiences that make me who I am.
+        </p>
+
+        <p className="text-xs text-[var(--ctp-overlay0)] mb-6 flex items-center gap-1">
+          <span>Double tap to</span>
+          <Heart size={10} className="inline text-[var(--ctp-red)] fill-[var(--ctp-red)]" />
         </p>
 
         {/* Filters — identical to original */}
