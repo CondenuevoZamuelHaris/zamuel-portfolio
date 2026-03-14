@@ -1035,6 +1035,7 @@ function Pics() {
   const [heartAnimations, setHeartAnimations] = useState<Record<number, boolean>>({});
   const [likedPics, setLikedPics] = useState<Record<number, boolean>>({});
   const [selectedPic, setSelectedPic] = useState<number | null>(null);
+  const [sort, setSort] = useState<'most' | 'least' | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('pic-likes');
@@ -1117,7 +1118,12 @@ function Pics() {
     { id: 42, category: 'me',         src: '',  placeholder: 'Just me' },
   ];
 
-  const filteredPics = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
+  const filteredPics = (() => {
+    let list = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
+    if (sort === 'most') list = [...list].sort((a, b) => (hearts[b.id] || 0) - (hearts[a.id] || 0));
+    if (sort === 'least') list = [...list].sort((a, b) => (hearts[a.id] || 0) - (hearts[b.id] || 0));
+    return list;
+  })();
   const currentPic = pics.find(p => p.id === selectedPic);
   const currentIdx = filteredPics.findIndex(p => p.id === selectedPic);
 
@@ -1152,8 +1158,8 @@ function Pics() {
           <Heart size={10} className="inline text-[var(--ctp-red)] fill-[var(--ctp-red)]" />
         </p>
 
-        {/* Filters — identical to original */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Filters + Sort */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
           {filters.map((f) => (
             <button
               key={f}
@@ -1167,6 +1173,31 @@ function Pics() {
               {f}
             </button>
           ))}
+
+          <div className="ml-auto flex gap-2">
+            <button
+              onClick={() => setSort(s => s === 'most' ? null : 'most')}
+              className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs transition-colors ${
+                sort === 'most'
+                  ? 'bg-[var(--ctp-red)] text-[var(--ctp-crust)]'
+                  : 'bg-[var(--ctp-surface0)] text-[var(--ctp-text)] hover:bg-[var(--ctp-surface1)]'
+              }`}
+            >
+              <Heart size={10} className={sort === 'most' ? 'fill-[var(--ctp-crust)]' : ''} />
+              Most liked
+            </button>
+            <button
+              onClick={() => setSort(s => s === 'least' ? null : 'least')}
+              className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs transition-colors ${
+                sort === 'least'
+                  ? 'bg-[var(--ctp-surface2)] text-[var(--ctp-text)]'
+                  : 'bg-[var(--ctp-surface0)] text-[var(--ctp-text)] hover:bg-[var(--ctp-surface1)]'
+              }`}
+            >
+              <Heart size={10} />
+              Least liked
+            </button>
+          </div>
         </div>
 
         {/* Masonry Grid — identical class names + logic as original */}
