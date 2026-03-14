@@ -925,7 +925,7 @@ content: 'I am an extrovert who enjoys being around people and socializing, but 
               </div>
             </div>
           )}
-          
+
         </div>
 
       </div>
@@ -1058,8 +1058,7 @@ function Pics() {
     { id: 9, category: 'life', placeholder: 'Daily vibes' },
   ];
 
-  const filteredPics = filter === 'all' ? pics : pics.filter(p => p.category === filter);
-  const displayCount = filteredPics.length;
+  const filteredPics = filter === 'All' ? pics : pics.filter(p => p.category === filter.toLowerCase());
 
   const handleDoubleClick = (id: number) => {
     // Always show animation
