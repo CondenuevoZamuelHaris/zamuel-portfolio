@@ -1246,9 +1246,19 @@ function Pics() {
                 </div>
               )}
 
-              {/* Heart Count */}
+              {/* Instagram hover overlay */}
+              {pic.src && (
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-6 rounded-lg pointer-events-none">
+                  <span className="flex items-center gap-2 text-white font-bold text-base drop-shadow">
+                    <Heart size={22} className={likedPics[pic.id] ? 'fill-white text-white' : 'text-white'} />
+                    {hearts[pic.id] || 0}
+                  </span>
+                </div>
+              )}
+
+              {/* Heart Count badge (fades on hover) */}
               {(hearts[pic.id] || 0) > 0 && (
-                <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
+                <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full group-hover:opacity-0 transition-opacity pointer-events-none">
                   <Heart
                     size={14}
                     className={likedPics[pic.id]
@@ -1282,17 +1292,8 @@ function Pics() {
 
           {/* Image */}
           <div
-            className="relative max-w-5xl w-full mx-16 flex flex-col items-center"
+            className="relative flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
-            onWheel={(e) => {
-              e.preventDefault();
-              const img = e.currentTarget.querySelector('img') as HTMLImageElement;
-              if (!img) return;
-              const current = parseFloat(img.style.transform?.replace('scale(','').replace(')','') || '1');
-              const next = e.deltaY < 0 ? Math.min(current + 0.1, 3) : Math.max(current - 0.1, 0.5);
-              img.style.transform = `scale(${next})`;
-              img.style.transition = 'transform 0.1s ease';
-            }}
           >
             <img
               src={currentPic.src}
@@ -1300,17 +1301,23 @@ function Pics() {
               className="select-none rounded-lg"
               draggable={false}
               style={{
-                maxHeight: '88vh',
-                maxWidth: '80vw',
+                maxHeight: '90vh',
+                maxWidth: '85vw',
                 width: 'auto',
                 height: 'auto',
                 display: 'block',
                 objectFit: 'contain',
               }}
             />
-            <div className="w-full flex items-center justify-between pt-3 px-1">
-              <span className="text-sm text-[var(--ctp-subtext0)]">{currentPic.placeholder}</span>
-              <span className="text-sm text-[var(--ctp-overlay0)]">{currentIdx + 1} / {filteredPics.length}</span>
+            <div className="flex items-center justify-between w-full pt-3 px-1">
+              <span className="text-sm text-white/70">{currentPic.placeholder}</span>
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1 text-sm text-white/70">
+                  <Heart size={14} className={likedPics[currentPic.id] ? 'fill-red-400 text-red-400' : ''} />
+                  {hearts[currentPic.id] || 0}
+                </span>
+                <span className="text-sm text-white/50">{currentIdx + 1} / {filteredPics.length}</span>
+              </div>
             </div>
           </div>
 
