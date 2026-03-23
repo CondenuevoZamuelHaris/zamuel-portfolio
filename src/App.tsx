@@ -1035,6 +1035,8 @@ function Pics() {
   const [heartAnimations, setHeartAnimations] = useState<Record<number, boolean>>({});
   const [likedPics, setLikedPics] = useState<Record<number, boolean>>({});
   const [selectedPic, setSelectedPic] = useState<number | null>(null);
+  const [picComments, setPicComments] = useState<Record<number, {name: string; text: string}[]>>({});
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [sort, setSort] = useState<'most' | 'least' | null>(null);
 
   useEffect(() => {
@@ -1273,50 +1275,210 @@ function Pics() {
         </div>
       </div>
 
-      {/* Lightbox — uses the same CSS variables, no new styling */}
+{/* Lightbox — Instagram style */}
       {selectedPic !== null && currentPic && (
         <div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedPic(null)}
         >
+          <style>{`
+            @keyframes fadeSlide {
+              from { opacity: 0; transform: scale(0.97); }
+              to   { opacity: 1; transform: scale(1); }
+            }
+            @keyframes fadeIn {
+              from { opacity: 0; transform: translateY(8px); }
+              to   { opacity: 1; transform: translateY(0); }
+            }
+            .comment-item { animation: fadeIn 0.25s ease; }
+            .lightbox-panel::-webkit-scrollbar { width: 4px; }
+            .lightbox-panel::-webkit-scrollbar-track { background: transparent; }
+            .lightbox-panel::-webkit-scrollbar-thumb { background: var(--ctp-surface2); border-radius: 4px; }
+          `}</style>
+
           {/* Prev */}
           {currentIdx > 0 && (
             <button
               aria-label="Previous photo"
-              className="absolute left-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
+              className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10"
               onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx - 1].id); }}
             >
               <ChevronLeft size={32} />
             </button>
           )}
 
-          {/* Image */}
+          {/* Main container */}
           <div
-            className="relative flex flex-col items-center"
+            className="flex w-full max-w-5xl mx-16 rounded-xl overflow-hidden"
+            style={{ height: '88vh', animation: 'fadeSlide 0.3s ease' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={currentPic.src}
-              alt={currentPic.placeholder}
-              className="select-none rounded-lg"
-              draggable={false}
-              style={{
-                maxHeight: '90vh',
-                maxWidth: '85vw',
-                width: 'auto',
-                height: 'auto',
-                display: 'block',
-                objectFit: 'contain',
+            {/* Left — image */}
+            <div
+              className="flex-1 bg-black flex items-center justify-center overflow-hidden"
+              onWheel={(e) => {
+                e.preventDefault();
+                const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                if (!img) return;
+                const current = parseFloat(img.style.transform?.replace('scale(','').replace(')','') || '1');
+                const next = e.deltaY < 0 ? Math.min(current + 0.1, 3) : Math.max(current - 0.1, 0.5);
+                img.style.transform = `scale(${next})`;
+                img.style.transition = 'transform 0.1s ease';
               }}
-            />
-            <div className="flex items-center justify-between w-full pt-3 px-1">
-              <span className="text-sm text-white/70">{currentPic.placeholder}</span>
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1 text-sm text-white/70">
-                  <Heart size={14} className={likedPics[currentPic.id] ? 'fill-red-400 text-red-400' : ''} />
-                  {hearts[currentPic.id] || 0}
-                </span>
-                <span className="text-sm text-white/50">{currentIdx + 1} / {filteredPics.length}</span>
+            >
+              <img
+                key={currentPic.id}
+                src={currentPic.src}
+                alt={currentPic.placeholder}
+                className="select-none"
+                draggable={false}
+                style={{
+                  maxHeight: '88vh',
+                  maxWidth: '100%',
+                  width: 'auto',
+                  objectFit: 'contain',
+                  display: 'block',
+                  animation: 'fadeSlide 0.3s ease',
+                }}
+              />
+            </div>
+
+            {/* Right — panel */}
+            <div
+              className="w-80 flex flex-col bg-[var(--ctp-mantle)] border-l border-[var(--ctp-surface0)]"
+              style={{ minWidth: '320px' }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--ctp-surface0)]">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[var(--accent-color)] flex items-center justify-center text-[var(--ctp-crust)] text-xs font-bold">
+                    Z
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--ctp-text)]">zamuel.ito</p>
+                    <p className="text-xs text-[var(--ctp-overlay0)]">{currentPic.placeholder}</p>
+                  </div>
+                </div>
+                <button
+                  aria-label="Close"
+                  onClick={() => setSelectedPic(null)}
+                  className="text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Comments */}
+              <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4 lightbox-panel">
+                {/* Caption */}
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[var(--accent-color)] flex items-center justify-center text-[var(--ctp-crust)] text-xs font-bold flex-shrink-0">
+                    Z
+                  </div>
+                  <div>
+                    <p className="text-sm text-[var(--ctp-text)]">
+                      <span className="font-semibold mr-1">zamuel.ito</span>
+                      {currentPic.placeholder}
+                    </p>
+                    <p className="text-xs text-[var(--ctp-overlay0)] mt-1">{currentIdx + 1} / {filteredPics.length}</p>
+                  </div>
+                </div>
+
+                {/* Comments list */}
+                {(picComments[currentPic.id] || []).map((c, i) => (
+                  <div key={i} className="flex gap-3 comment-item">
+                    <div className="w-8 h-8 rounded-full bg-[var(--ctp-surface1)] flex items-center justify-center text-[var(--ctp-text)] text-xs font-bold flex-shrink-0">
+                      {c.name[0].toUpperCase()}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-[var(--ctp-text)]">
+                        <span className="font-semibold mr-1">{c.name}</span>
+                        {c.text}
+                      </p>
+                      <p className="text-xs text-[var(--ctp-overlay0)] mt-1">just now</p>
+                    </div>
+                  </div>
+                ))}
+
+                {(!picComments[currentPic.id] || picComments[currentPic.id].length === 0) && (
+                  <p className="text-xs text-[var(--ctp-overlay0)] text-center py-4">No comments yet. Be the first!</p>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="border-t border-[var(--ctp-surface0)] px-4 pt-3 pb-2">
+                <div className="flex items-center gap-4 mb-2">
+                  <button
+                    aria-label="Like photo"
+                    onClick={() => {
+                      if (likedPics[currentPic.id]) return;
+                      handleDoubleClick(currentPic.id);
+                    }}
+                    className="transition-transform hover:scale-110 active:scale-95"
+                  >
+                    <Heart
+                      size={24}
+                      className={likedPics[currentPic.id]
+                        ? 'text-[var(--ctp-red)] fill-[var(--ctp-red)]'
+                        : 'text-[var(--ctp-text)] hover:text-[var(--ctp-red)]'}
+                      style={{ transition: 'all 0.2s ease' }}
+                    />
+                  </button>
+                </div>
+                <p className="text-sm font-semibold text-[var(--ctp-text)] mb-1">
+                  {(hearts[currentPic.id] || 0)} {(hearts[currentPic.id] || 0) === 1 ? 'like' : 'likes'}
+                </p>
+              </div>
+
+              {/* Comment input */}
+              <div className="border-t border-[var(--ctp-surface0)] px-4 py-3 flex items-center gap-3">
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  className="flex-1 bg-transparent text-sm text-[var(--ctp-text)] outline-none placeholder:text-[var(--ctp-overlay0)]"
+                  value={commentInputs[currentPic.id] || ''}
+                  onChange={(e) => setCommentInputs(prev => ({ ...prev, [currentPic.id]: e.target.value }))}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const text = (commentInputs[currentPic.id] || '').trim();
+                      const name = (commentInputs['__name'] || 'guest').trim() || 'guest';
+                      if (!text) return;
+                      setPicComments(prev => ({
+                        ...prev,
+                        [currentPic.id]: [...(prev[currentPic.id] || []), { name, text }]
+                      }));
+                      setCommentInputs(prev => ({ ...prev, [currentPic.id]: '' }));
+                    }
+                  }}
+                />
+                <button
+                  className="text-[var(--accent-color)] text-sm font-semibold hover:opacity-70 transition-opacity"
+                  onClick={() => {
+                    const text = (commentInputs[currentPic.id] || '').trim();
+                    const name = (commentInputs['__name'] || 'guest').trim() || 'guest';
+                    if (!text) return;
+                    setPicComments(prev => ({
+                      ...prev,
+                      [currentPic.id]: [...(prev[currentPic.id] || []), { name, text }]
+                    }));
+                    setCommentInputs(prev => ({ ...prev, [currentPic.id]: '' }));
+                  }}
+                >
+                  Post
+                </button>
+              </div>
+
+              {/* Name input */}
+              <div className="px-4 pb-3 flex items-center gap-2">
+                <span className="text-xs text-[var(--ctp-overlay0)]">posting as:</span>
+                <input
+                  type="text"
+                  placeholder="your name"
+                  maxLength={20}
+                  className="flex-1 bg-transparent text-xs text-[var(--ctp-subtext1)] outline-none placeholder:text-[var(--ctp-overlay0)] border-b border-[var(--ctp-surface1)] pb-0.5"
+                  value={commentInputs['__name'] || ''}
+                  onChange={(e) => setCommentInputs(prev => ({ ...prev, '__name': e.target.value }))}
+                />
               </div>
             </div>
           </div>
@@ -1325,21 +1487,12 @@ function Pics() {
           {currentIdx < filteredPics.length - 1 && (
             <button
               aria-label="Next photo"
-              className="absolute right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
+              className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
               onClick={(e) => { e.stopPropagation(); setSelectedPic(filteredPics[currentIdx + 1].id); }}
             >
               <ChevronRight size={32} />
             </button>
           )}
-
-          {/* Close */}
-          <button
-            aria-label="Close"
-            className="absolute top-4 right-4 p-2 text-[var(--ctp-subtext0)] hover:text-[var(--ctp-text)] transition-colors z-10"
-            onClick={() => setSelectedPic(null)}
-          >
-            <X size={22} />
-          </button>
         </div>
       )}
     </div>
