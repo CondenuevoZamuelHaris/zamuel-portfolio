@@ -1182,7 +1182,7 @@ function Pics() {
         </p>
 
         <p className="text-xs text-[var(--ctp-overlay0)] mb-6 flex items-center gap-1">
-          <span>Double tap to</span>
+          <span>Click tap to</span>
           <Heart size={10} className="inline text-[var(--ctp-red)] fill-[var(--ctp-red)]" />
         </p>
 
@@ -1438,7 +1438,7 @@ function Posts() {
     },
     {
       title: 'Lessons from My Skating Accident',
-      excerpt: 'Sometimes life throws you off balance. Here is what I learned from my accident and recovery.',
+      excerpt: 'Sometimes life throws you off balance. Here is what I learnegit push -u origin master:main --forced from my accident and recovery.',
       tags: ['personal', 'growth'],
       readTime: '6 min read',
       date: 'Jan 15, 2025'
