@@ -1039,9 +1039,9 @@ function GiscusComment({ term }: { term: string }) {
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', 'CondenuevoZamuelHaris/zamuel-portfolio');
-    script.setAttribute('data-repo-id', 'YOUR_REPO_ID_HERE');
-    script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'YOUR_CATEGORY_ID_HERE');
+    script.setAttribute('data-repo-id', 'R_kgDORlsaQQ');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDORlsaQc4C5ZWs');
     script.setAttribute('data-mapping', 'specific');
     script.setAttribute('data-term', term);
     script.setAttribute('data-reactions-enabled', '0');
