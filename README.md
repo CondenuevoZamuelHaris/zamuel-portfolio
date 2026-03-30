@@ -4,7 +4,7 @@
 
 A personal portfolio website built with React and TypeScript.
 
-🔗 Live site: https://condenuevozamuelharis.github.io/zamuel-portfolio/
+🔗 Live site: [zam.is-a.dev](https://zam.is-a.dev/)
 ---
 
 ## Tech Stack
